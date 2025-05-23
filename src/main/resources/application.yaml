@@ -1,0 +1,29 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:~/recipAI
+    url: jdbc:h2:tcp://localhost/~/recipAI
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        default_batch_fetch_size: 100
+        jdbc:
+          batch_size: 50      # insert 시 적용되는 batch size
+          order_inserts: true  # insert 순서를 최적화하여 성능 향상
+          order_updates: true  # update 순서도 최적화
+    show-sql: true
+logging:
+  level:
+    org.springframework.messaging: DEBUG
+    org.springframework.web.socket: DEBUG
+    root: INFO
