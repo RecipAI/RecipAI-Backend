@@ -49,6 +49,9 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           envs: GITHUB_SHA
           script: |
+            echo "🔐 SHA-256 hash of EC2_KEY (for debug):"
+            echo "$EC2_KEY" | sha256sum
+            
             echo "🛑 Checking if recipAI is running"
             CONTAINER_ID=$(docker ps -aq -f name=recipAI)
             if [ "$CONTAINER_ID" ]; then
