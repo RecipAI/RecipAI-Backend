@@ -49,9 +49,15 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           envs: GITHUB_SHA
           script: |
-            echo "✋🏻Stopping existing container"
-            sudo docker stop recipAI
-            sudo docker rm recipAI
+            echo "🛑 Checking if recipAI is running"
+            CONTAINER_ID=$(docker ps -aq -f name=recipAI)
+            if [ "$CONTAINER_ID" ]; then
+            echo "Stopping container recipAI..."
+            docker stop recipAI
+            docker rm recipAI
+            else
+            echo "No existing container found. Skipping stop/rm."
+            fi
         
             sudo docker ps -a
             
