@@ -6,13 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ChatService {
     private final RestClient restClient;
 
-    public IngredientsResponse requestIngredients(String imageUrl) {
-        IngredientsRequest request = new IngredientsRequest(imageUrl);
+    public IngredientsResponse requestIngredients(List<String> imageUrls) {
+        IngredientsRequest request = new IngredientsRequest(imageUrls);
         String GptResponse = callGptWithImage(request);
         return new IngredientsResponse(GptResponse);
     }

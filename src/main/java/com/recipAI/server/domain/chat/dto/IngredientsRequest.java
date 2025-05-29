@@ -3,6 +3,7 @@ package com.recipAI.server.domain.chat.dto;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,19 +14,18 @@ public class IngredientsRequest {
     private String OPENAI_MODEL;
     private final List<Message> messages;
 
-    public IngredientsRequest(String imageUrl) {
-        Message message = new Message(
-                "user",
-                List.of(
-                        new Content("text", "첨부한 이미지에 보이는 재료들을 JSON 배열 형식의 리스트로만 반환해줘.  \n" +
-                                "설명이나 문장 없이, 예를 들어 [\"사과\", \"연어\", \"브로콜리\"] 형식으로 응답해줘."),
-                        new Content("image_url", Map.of("url", imageUrl))
-                )
-        );
-        this.messages = List.of(message);
+    public IngredientsRequest(List<String> imageUrls) {
+        List<Content> contents = new ArrayList<>();
+        contents.add(new Content("input_text", "첨부한 이미지에 보이는 재료들을 JSON 배열 형식의 리스트로만 반환해줘.  \n" +
+                "설명이나 문장 없이, 예를 들어 [\"사과\", \"연어\", \"브로콜리\"] 형식으로 응답해줘."));
+        for (String imageUrl : imageUrls) {
+            contents.add(new Content("input_image", Map.of("image_url", imageUrl)));
+        }
+        this.messages = List.of(new Message("user", contents));
     }
 
-    public record Message(String role, List<Content> content) {}
+    public record Message(String role, List<Content> content) {
+    }
 
     @Getter
     public static class Content {

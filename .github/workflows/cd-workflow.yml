@@ -28,6 +28,13 @@ jobs:
           server-id: github
           setting-path: ${{ github.workspace }}
 
+      - name: 📜 make application-dev.yml
+        run: |
+          cd ./src/main/resources
+          touch ./application-dev.yml
+          echo "${{ secrets.DEV_YML }}" > ./application-dev.yml
+        shell: bash
+
       - name: 👏🏻 grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -35,7 +42,7 @@ jobs:
         run: ./gradlew clean build -x test --stacktrace
 
       - name: 🐳 Docker build & push
-        run:  |
+        run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}
@@ -61,7 +68,7 @@ jobs:
             else
             echo "No existing container found. Skipping stop/rm."
             fi
-        
+            
             sudo docker ps -a
             
             echo "🥳Pulling new image"

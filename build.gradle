@@ -23,12 +23,12 @@ repositories {
 	mavenCentral()
 
 	// 프로젝트가 필요한 라이브러리를 어디서 가져올지 정의하는 부분
-	maven { url 'https://repo.spring.io/milestone' }
-	maven { url 'https://repo.spring.io/snapshot' }
-	maven {
-		name = 'Central Portal Snapshots'
-		url = 'https://central.sonatype.com/repository/maven-snapshots/'
-	}
+//	maven { url 'https://repo.spring.io/milestone' }
+//	maven { url 'https://repo.spring.io/snapshot' }
+//	maven {
+//		name = 'Central Portal Snapshots'
+//		url = 'https://central.sonatype.com/repository/maven-snapshots/'
+//	}
 }
 
 dependencies {
@@ -42,10 +42,12 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// spring ai
-	implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
-	implementation 'org.springframework.ai:spring-ai-openai'
-	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+//	implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
+//	implementation "org.springframework.ai:spring-ai-openai-spring-boot-starter:0.8.1"
+//	implementation "org.springframework.ai:spring-ai-starter-model-openai"
 
+	// AWS - S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
