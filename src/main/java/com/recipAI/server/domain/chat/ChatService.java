@@ -3,8 +3,10 @@ package com.recipAI.server.domain.chat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipAI.server.common.exception.RecipAIException;
-import com.recipAI.server.domain.chat.dto.IngredientsRequest;
 import com.recipAI.server.domain.chat.dto.IngredientsResponse;
+import com.recipAI.server.domain.chat.dto.MenusResponse;
+import com.recipAI.server.domain.chat.dto.prompt.IngredientsImageRequest;
+import com.recipAI.server.domain.chat.dto.prompt.MenusRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.recipAI.server.common.response.BaseResponseStatus.*;
+import static com.recipAI.server.common.utils.GptResponseParser.extractMessageContent;
+import static com.recipAI.server.common.utils.Serializer.serializeObject;
 
 @Slf4j
 @Service
@@ -39,33 +43,34 @@ public class ChatService {
         this.objectMapper = objectMapper;
     }
 
-    public IngredientsResponse requestIngredients(List<String> imageUrls) {
-        IngredientsRequest request = new IngredientsRequest(OPENAI_MODEL, imageUrls);
+    public IngredientsResponse requestIngredients(List<String> encodedImages) {
+        IngredientsImageRequest request = new IngredientsImageRequest(OPENAI_MODEL, encodedImages);
         log.info("[requestIngredients] IngredientsRequest = {}", request.toString());
-        String GptResponse = callGptWithImage(request);
+        String GptResponse = callGpt(request);
         return new IngredientsResponse(GptResponse);
     }
 
-    private String callGptWithImage(IngredientsRequest requestBody) {
-        String jsonBody = null;
-        try {
-            jsonBody = objectMapper.writeValueAsString(requestBody);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.info("[OpenAI Request] Body = {}", jsonBody);
+    public MenusResponse requestMenus(List<String> ingredients) {
+        MenusRequest request = new MenusRequest(OPENAI_MODEL, ingredients);
+        log.info("[requestMenus] MenusRequest = {}", request.toString());
+        String gptResponse = extractMessageContent(callGpt(request));
+        log.info("[requestMenus] GPT가 준 응답 = {}", gptResponse);
+        return new MenusResponse(gptResponse);
+    }
 
 
+    private <T> String callGpt(T request) {
+        log.info("[OpenAI Request] Body = {}", serializeObject(request));
         try {
             return restClient.post()
-                    .body(requestBody)
+                    .body(request)
                     .retrieve()
                     .body(String.class);
         } catch (HttpClientErrorException e) {
             throw handleGptException(e);
         }
     }
+
 
     private RecipAIException handleGptException(HttpClientErrorException e) {
         String responseBody = e.getResponseBodyAsString();
@@ -119,5 +124,4 @@ public class ChatService {
             throw new RecipAIException(INVALID_REQUEST_ERROR);
         }
     }
-
 }

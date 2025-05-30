@@ -27,6 +27,8 @@ public enum BaseResponseStatus {
     UNSUPPORTED_FILE_FORMAT(2003, HttpStatus.BAD_REQUEST, "지원되지 않는 파일 형식입니다. PNG, JPEG, WEBP 또는 애니메이션이 없는 GIF 형식을 사용해주세요."),
     OVER_SIZE_IMAGE(2004, HttpStatus.BAD_REQUEST, "이미지 파일이 용량을 초과하여 업로드할 수 없습니다. 업로드 가능한 크기는 최대 50MB 입니다."),
     NOT_FOUND_IMAGE(2005, HttpStatus.BAD_REQUEST, "요청에서 이미지 파일을 찾을 수 없습니다. 다시 시도해주세요."),
+    JSON_PARSING_FAIL(2006, HttpStatus.BAD_REQUEST, "요청 본문의 JSON 구문에 오류가 있어 파싱할 수 없습니다. 중괄호나 따옴표의 위치를 확인해주세요."),
+    JSON_DESERIALIZATION_FAIL(2007, HttpStatus.BAD_REQUEST, "서버에서 JSON 데이터를 객체로 변환하는 데 실패했습니다. 배열, 중괄호, 따옴표 등의 JSON 문법을 확인해주세요."),
 
     //- 3000번대 : open ai 통신 관련 코드
     OPENAI_API_ERROR(3001, HttpStatus.BAD_REQUEST, "open AI API를 사용하는 과정에서 오류가 발생했습니다."),
