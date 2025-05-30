@@ -42,8 +42,7 @@ public class S3Service {
 
     private String putS3(File file) {
         String fileName = createFilePath(file);
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file));
         file.delete();
         String imageUrl = amazonS3.getUrl(bucketName, fileName).toString();
         log.info("[putS3] image url = {}", imageUrl);

@@ -2,19 +2,19 @@ package com.recipAI.server.common.exception;
 
 import com.recipAI.server.common.response.BaseResponse;
 import com.recipAI.server.common.response.BaseResponseStatus;
-import com.recipAI.server.common.response.SimpleErrorResponse;
 import lombok.Getter;
 
 @Getter
 public class RecipAIException extends RuntimeException {
 
-    private BaseResponse response;
-
-    public RecipAIException(BaseResponse response) {
-        this.response = response;
-    }
+    private final BaseResponse response;
 
     public RecipAIException(BaseResponseStatus responseStatus) {
-        response = new SimpleErrorResponse(responseStatus);
+        response = new BaseResponse(responseStatus, null);
+    }
+
+    public RecipAIException(BaseResponseStatus responseStatus, String message) {
+        response = new BaseResponse(responseStatus, message, null);
+        response.setMessage(message);
     }
 }

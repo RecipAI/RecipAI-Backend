@@ -16,16 +16,16 @@ public class RecipAIControllerAdvice {
 
     @ExceptionHandler(RecipAIException.class)
     public ResponseEntity<BaseResponse> handleKuchatException(RecipAIException e) {
-        log.error(String.valueOf(e.getResponse()));
-        HttpStatus httpStatus = e.getResponse().getHttpStatus();
-        return ResponseEntity.status(httpStatus)
-                .body(e.getResponse());
+        BaseResponse response = e.getResponse();
+        log.error(String.valueOf(response));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<BaseResponse> handleMultipartException() {
         log.error("[handleMultipartException] error message = {}", IMAGE_BAD_REQUEST.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new BaseResponse(IMAGE_BAD_REQUEST));
+                .body(new BaseResponse(IMAGE_BAD_REQUEST, null));
     }
 }

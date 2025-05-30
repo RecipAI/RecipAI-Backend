@@ -6,11 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class SimpleErrorResponse extends BaseResponse {
+public class SimpleErrorResponse <T> extends BaseResponse {
 
     public SimpleErrorResponse(BaseResponseStatus responseStatus) {
-        super(responseStatus);
+        super(responseStatus, responseStatus.getMessage());
+    }
+
+    public SimpleErrorResponse (BaseResponseStatus responseStatus, String message, T result) {
+        super(responseStatus, message,  result);
     }
 }

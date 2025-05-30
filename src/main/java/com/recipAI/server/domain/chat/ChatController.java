@@ -6,10 +6,14 @@ import com.recipAI.server.domain.chat.dto.IngredientsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.recipAI.server.common.response.BaseResponseStatus.IMAGE_UPLOAD_FAIL;
@@ -23,10 +27,11 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/ingredients")
-    public ResponseEntity<IngredientsResponse> detectIngredients(@RequestPart(required = false) List<MultipartFile> uploadImages) {
+    public ResponseEntity<IngredientsResponse> detectIngredients(@RequestPart("images") List<MultipartFile> uploadImages) {
         log.info("[detectIngredients] 재료 이미지 요청");
         List<String> imageUrls = uploadImages.stream()
                 .map(this::uploadImage)
+                .peek(imageUrl -> log.debug("[detectIngredients] imageUrl = {}", imageUrl))
                 .toList();
         IngredientsResponse response = chatService.requestIngredients(imageUrls);
         return ResponseEntity.ok(response);

@@ -21,7 +21,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-
 	// 프로젝트가 필요한 라이브러리를 어디서 가져올지 정의하는 부분
 //	maven { url 'https://repo.spring.io/milestone' }
 //	maven { url 'https://repo.spring.io/snapshot' }

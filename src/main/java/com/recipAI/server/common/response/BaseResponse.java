@@ -1,21 +1,27 @@
 package com.recipAI.server.common.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class BaseResponse {
-    protected BaseResponseStatus responseStatus;
+public class BaseResponse<T> {
+    private final boolean isSuccess;
+    private final int code;
+    private String message;
+    private final T result;
 
-    @JsonIgnore
-    public HttpStatus getHttpStatus() {
-        return responseStatus.getHttpStatus();
+    public BaseResponse(BaseResponseStatus responseStatus, T result) {
+        this.isSuccess = responseStatus.isSuccess();
+        this.code = responseStatus.getCode();
+        this.message = responseStatus.getMessage();
+        this.result = result;
+    }
+
+    public BaseResponse(BaseResponseStatus responseStatus, String message, T result) {
+        this.isSuccess = responseStatus.isSuccess();
+        this.code = responseStatus.getCode();
+        this.message = message;
+        this.result = result;
     }
 }

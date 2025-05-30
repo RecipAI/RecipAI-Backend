@@ -12,21 +12,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
-@RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    @Value("${spring.ai.openai.api-key}")
-    private String OPENAI_API_KEY;
-
-    @Bean
-    public RestClient restClient(RestClient.Builder builder) {
-        return builder
-                .baseUrl("https://api.openai.com/v1/chat/completions")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, OPENAI_API_KEY)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

@@ -29,21 +29,26 @@ public enum BaseResponseStatus {
     NOT_FOUND_IMAGE(2005, HttpStatus.BAD_REQUEST, "요청에서 이미지 파일을 찾을 수 없습니다. 다시 시도해주세요."),
 
     //- 3000번대 : open ai 통신 관련 코드
-    INVALID_REQUEST_ERROR(3001, HttpStatus.BAD_REQUEST, "필수 입력값이 누락되었거나, 요청 형식이 올바르지 않습니다."),        // 입력 항목 누락 또는 형식 오류 (json 파싱 오류)
-    INVALID_MODEL(3002, HttpStatus.BAD_REQUEST, "존재하지 않거나 허용되지 않는 모델입니다."),
-    CONTEXT_LENGTH_EXCEEDED(3003, HttpStatus.BAD_REQUEST, "메시지 토큰 수가 모델의 컨텍스트 길이를 초과했습니다."),
-    RATE_LIMIT_ERROR(3004, HttpStatus.BAD_REQUEST, "너무 많은 요청을 너무 빠르게 보내서 오류가 발생했습니다."),
-    INVALID_API_KEY(3005, HttpStatus.UNAUTHORIZED, "OPEN AI API 키 형식이 유효하지 않습니다."),
-    MISSING_API_KEY(3006, HttpStatus.UNAUTHORIZED, "요청 헤더에 API 키가 포함되지 않았습니다."),
-    INSUFFICIENT_QUOTA(3007, HttpStatus.UNAUTHORIZED, "사용자의 API 크레딧 또는 사용량을 초과했습니다."),
+    OPENAI_API_ERROR(3001, HttpStatus.BAD_REQUEST, "open AI API를 사용하는 과정에서 오류가 발생했습니다."),
+    INVALID_REQUEST_ERROR(3002, HttpStatus.BAD_REQUEST, "필수 입력값이 누락되었거나, 요청 형식이 올바르지 않습니다."),        // 입력 항목 누락 또는 형식 오류 (json 파싱 오류)
+    INVALID_MODEL(3003, HttpStatus.BAD_REQUEST, "존재하지 않거나 허용되지 않는 모델입니다."),
+    CONTEXT_LENGTH_EXCEEDED(3004, HttpStatus.BAD_REQUEST, "메시지 토큰 수가 모델의 컨텍스트 길이를 초과했습니다."),
+    RATE_LIMIT_ERROR(3005, HttpStatus.BAD_REQUEST, "너무 많은 요청을 너무 빠르게 보내서 오류가 발생했습니다."),
+    INVALID_API_KEY(3006, HttpStatus.UNAUTHORIZED, "OPEN AI API 키 형식이 유효하지 않습니다."),
+    MISSING_API_KEY(3007, HttpStatus.UNAUTHORIZED, "요청 헤더에 API 키가 포함되지 않았습니다."),
+    INSUFFICIENT_QUOTA(3008, HttpStatus.UNAUTHORIZED, "사용자의 API 크레딧 또는 사용량을 초과했습니다."),
 
 
     //- 3000번대 : DB 관련 코드
-    DB_SUCCESS(3000, HttpStatus.ACCEPTED,"DB에 성공적으로 반영되었습니다."),
-    DB_SAVE_FAIL(3001, HttpStatus.INTERNAL_SERVER_ERROR, "DB 저장에 실패했습니다.");
+    DB_SUCCESS(4000, HttpStatus.ACCEPTED,"DB에 성공적으로 반영되었습니다."),
+    DB_SAVE_FAIL(4001, HttpStatus.INTERNAL_SERVER_ERROR, "DB 저장에 실패했습니다.");
 
     private int code;
     private HttpStatus httpStatus;
     @Setter
     private String message;
+
+    public boolean isSuccess() {
+        return this == SUCCESS;
+    }
 }
