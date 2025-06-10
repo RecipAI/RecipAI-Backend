@@ -26,7 +26,7 @@ import static com.recipAI.server.common.utils.Serializer.serializeObject;
 @Slf4j
 @Service
 public class ChatService {
-    @Value("${spring.ai.openai.chat.options.model}")
+    @Value("${openai.model}")
     private String OPENAI_MODEL;
 
     private final String OPENAI_API_KEY;
@@ -34,7 +34,7 @@ public class ChatService {
     private final ObjectMapper objectMapper;
 
     public ChatService(RestClient.Builder builder, ObjectMapper objectMapper, Environment environment) {
-        this.OPENAI_API_KEY = environment.getProperty("spring.ai.openai.api-key");
+        this.OPENAI_API_KEY = environment.getProperty("openai.api-key");
         this.restClient = builder
                 .baseUrl("https://api.openai.com/v1/chat/completions")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + OPENAI_API_KEY)
