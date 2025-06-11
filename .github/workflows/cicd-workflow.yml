@@ -1,4 +1,4 @@
-name: RecipAI CD with Gradle and Docker
+name: RecipAI CI/CD with Gradle and Docker
 
 on:
   push:

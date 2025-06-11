@@ -3,6 +3,8 @@ package com.recipAI.server.common.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
+
 public class GptResponseParser {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -17,6 +19,17 @@ public class GptResponseParser {
                     .asText();
         } catch (Exception e) {
             throw new RuntimeException("Failed to extract content from GPT response", e);
+        }
+    }
+
+    public static List<String> parseIngredients(String gptResponse) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(gptResponse);
+            String content = root.path("choices").get(0).path("message").path("content").asText();
+            return mapper.readValue(content, List.class);
+        } catch (Exception e) {
+            throw new RuntimeException("GPT 응답 파싱 실패: " + gptResponse, e);
         }
     }
 

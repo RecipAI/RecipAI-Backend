@@ -39,6 +39,7 @@ public enum BaseResponseStatus {
     INVALID_API_KEY(3006, HttpStatus.UNAUTHORIZED, "OPEN AI API 키 형식이 유효하지 않습니다."),
     MISSING_API_KEY(3007, HttpStatus.UNAUTHORIZED, "요청 헤더에 API 키가 포함되지 않았습니다."),
     INSUFFICIENT_QUOTA(3008, HttpStatus.UNAUTHORIZED, "사용자의 API 크레딧 또는 사용량을 초과했습니다."),
+    UNRECOGNIZED_DISH(3009, HttpStatus.BAD_REQUEST, "인식할 수 없는 요리 이름입니다."),
 
 
     //- 3000번대 : DB 관련 코드

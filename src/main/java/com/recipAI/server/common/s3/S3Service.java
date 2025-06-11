@@ -31,7 +31,7 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    private final String DIR_NAME = "/ingredients";
+    private final String DIR_NAME = "ingredients";
 
     public String uploadImage(MultipartFile multipartFile) throws IOException {
         log.info("[uploadImage] 이미지 업로드 요청");

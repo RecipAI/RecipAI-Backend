@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipAI.server.common.exception.RecipAIException;
 import com.recipAI.server.domain.chat.dto.IngredientsResponse;
 import com.recipAI.server.domain.chat.dto.MenusResponse;
+import com.recipAI.server.domain.chat.dto.prompt.RecipeRequest;
+import com.recipAI.server.domain.chat.dto.RecipeResponse;
 import com.recipAI.server.domain.chat.dto.prompt.IngredientsImageRequest;
 import com.recipAI.server.domain.chat.dto.prompt.MenusRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 import static com.recipAI.server.common.response.BaseResponseStatus.*;
 import static com.recipAI.server.common.utils.GptResponseParser.extractMessageContent;
+import static com.recipAI.server.common.utils.GptResponseParser.parseIngredients;
 import static com.recipAI.server.common.utils.Serializer.serializeObject;
 
 @Slf4j
@@ -43,11 +46,12 @@ public class ChatService {
         this.objectMapper = objectMapper;
     }
 
-    public IngredientsResponse requestIngredients(List<String> encodedImages) {
-        IngredientsImageRequest request = new IngredientsImageRequest(OPENAI_MODEL, encodedImages);
+    public IngredientsResponse requestIngredients(String imageUrl) {
+        IngredientsImageRequest request = new IngredientsImageRequest(OPENAI_MODEL, imageUrl);
         log.info("[requestIngredients] IngredientsRequest = {}", request.toString());
-        String GptResponse = callGpt(request);
-        return new IngredientsResponse(GptResponse);
+        List<String> ingredients = parseIngredients(callGpt(request));
+        log.info("[requestIngredients] ingredients = {}", ingredients.toString());
+        return new IngredientsResponse(ingredients);
     }
 
     public MenusResponse requestMenus(List<String> ingredients) {
@@ -56,6 +60,18 @@ public class ChatService {
         String gptResponse = extractMessageContent(callGpt(request));
         log.info("[requestMenus] GPT가 준 응답 = {}", gptResponse);
         return new MenusResponse(gptResponse);
+    }
+
+
+    public RecipeResponse requestRecipe(String menuName) {
+        RecipeRequest request = new RecipeRequest(OPENAI_MODEL, menuName);
+        log.info("[requestRecipe] RecipeRequest = {}", request.toString());
+        String gptResponse = extractMessageContent(callGpt(request));
+        log.info("[requestRecipe] GPT가 준 응답 = {}", gptResponse);
+        if (gptResponse.trim().equalsIgnoreCase("UnrecognizedDishException")) {
+            throw new RecipAIException(UNRECOGNIZED_DISH);
+        }
+        return new RecipeResponse(gptResponse);
     }
 
 
@@ -124,4 +140,5 @@ public class ChatService {
             throw new RecipAIException(INVALID_REQUEST_ERROR);
         }
     }
+
 }

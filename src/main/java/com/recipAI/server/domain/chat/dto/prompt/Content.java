@@ -1,8 +1,10 @@
 package com.recipAI.server.domain.chat.dto.prompt;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.ToString;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
 @Getter
 public class Content {
@@ -20,10 +22,5 @@ public class Content {
         this.image_url = image_url;
     }
 
-    public record ImageUrl(String url) {
-        @Override
-        public String toString() {
-            return "이미지url";
-        }
-    }
+    public record ImageUrl(String url) {}
 }
