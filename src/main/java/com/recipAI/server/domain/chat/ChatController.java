@@ -36,7 +36,7 @@ public class ChatController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/ingredients")
+    @PostMapping("/ingredients/valid")
     public ResponseEntity<Boolean> validateIngredients(@RequestPart("image") MultipartFile image) {
         log.info("[validateIngredients] 재료 이미지 요청");
         String imageUrl = uploadImage(image);
