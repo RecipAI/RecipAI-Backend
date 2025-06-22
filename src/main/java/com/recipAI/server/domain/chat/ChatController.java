@@ -36,6 +36,15 @@ public class ChatController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/ingredients")
+    public ResponseEntity<Boolean> validateIngredients(@RequestPart("image") MultipartFile image) {
+        log.info("[validateIngredients] 재료 이미지 요청");
+        String imageUrl = uploadImage(image);
+        log.info("[validateIngredients] imageUrl = {}", imageUrl);
+        Boolean response = chatService.validateIngredients(imageUrl);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/menus")
     public ResponseEntity<MenusResponse> getMenus(@RequestBody List<String> ingredients) {
         log.info("[getMenus] 재료 목록을 통한 요리 레시피 요청. 재료 목록 = {}", ingredients);

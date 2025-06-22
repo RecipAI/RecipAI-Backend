@@ -33,4 +33,34 @@ public class GptResponseParser {
         }
     }
 
+    public static boolean extractBooleanResponse(String rawJson) {
+        try {
+            JsonNode root = objectMapper.readTree(rawJson);
+
+            String content = root
+                    .path("choices")
+                    .get(0)
+                    .path("message")
+                    .path("content")
+                    .asText()
+                    .trim()
+                    .toLowerCase();
+
+            if ("true".equals(content)) {
+                return true;
+            } else if ("false".equals(content)) {
+                return false;
+            } else {
+                throw new RuntimeException("Unexpected GPT response: " + content);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract boolean from GPT response", e);
+        }
+    }
+
 }
+
+
+
+
+

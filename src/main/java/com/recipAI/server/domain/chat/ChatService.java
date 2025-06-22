@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipAI.server.common.exception.RecipAIException;
 import com.recipAI.server.domain.chat.dto.IngredientsResponse;
+import com.recipAI.server.domain.chat.dto.IngredientsStringRequest;
 import com.recipAI.server.domain.chat.dto.MenusResponse;
 import com.recipAI.server.domain.chat.dto.prompt.RecipeRequest;
 import com.recipAI.server.domain.chat.dto.RecipeResponse;
@@ -22,8 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.recipAI.server.common.response.BaseResponseStatus.*;
-import static com.recipAI.server.common.utils.GptResponseParser.extractMessageContent;
-import static com.recipAI.server.common.utils.GptResponseParser.parseIngredients;
+import static com.recipAI.server.common.utils.GptResponseParser.*;
 import static com.recipAI.server.common.utils.Serializer.serializeObject;
 
 @Slf4j
@@ -53,6 +53,13 @@ public class ChatService {
         log.info("[requestIngredients] ingredients = {}", ingredients.toString());
         return new IngredientsResponse(ingredients);
     }
+
+    public Boolean validateIngredients(String imageUrl) {
+        IngredientsImageRequest request = new IngredientsImageRequest(OPENAI_MODEL, imageUrl);
+        log.info("[validateIngredients] IngredientsImageRequest = {}", request.toString());
+        return extractBooleanResponse(callGpt(request));
+    }
+
 
     public MenusResponse requestMenus(List<String> ingredients) {
         MenusRequest request = new MenusRequest(OPENAI_MODEL, ingredients);
@@ -140,5 +147,4 @@ public class ChatService {
             throw new RecipAIException(INVALID_REQUEST_ERROR);
         }
     }
-
 }

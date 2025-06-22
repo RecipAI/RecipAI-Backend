@@ -28,8 +28,6 @@ public class RecipeRequest {
                 "  \"youtube\": [\"유튜브 링크1\", \"유튜브 링크2\", \"유튜브 링크3\"]\n" +
                 "}";
         contents.add(new Content("text", prompt));
-//        contents.add(new Content("text", menuName));
-
         this.messages = List.of(new Message("user", contents));
     }
 }
