@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         log.info("[addCorsMappings] CorsMapping 호출");
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")        // 추후에 프론트 도메인 추가하기
+                .allowedOrigins("http://localhost:5173", "https://recipai-nu.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .exposedHeaders("Authorization", "Set-Cookie")
                 .allowCredentials(true)     // 쿠키 허용
