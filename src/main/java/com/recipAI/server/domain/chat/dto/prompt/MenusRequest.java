@@ -26,7 +26,8 @@ public class MenusRequest {
         String prompt = "다음은 재료 목록이야: " + String.join(", ", ingredients) +
                 ". 이 재료들을 바탕으로 만들 수 있는 요리 메뉴를 5개 추천해줘. " +
                 "각 요리는 key로, 필요한 재료 목록은 value로 구성된 JSON 객체 형태로만 응답해줘. " +
-                "설명이나 문장 없이 순수 JSON으로만 출력해줘. 예: {\"김치찌개\": [\"김치\", \"돼지고기\"], \"계란찜\": [\"계란\", \"소금\"]}";
+                "설명이나 문장 없이 순수 JSON으로만 출력해줘. 예: {\"김치찌개\": [\"김치\", \"돼지고기\"], \"계란찜\": [\"계란\", \"소금\"]} " +
+                "만약 적절한 요리를 만들 수 있는 식재료가 없다면, 설명 없이 빈 JSON 객체 {}만 반환해줘.";
         contents.add(new Content("text", prompt));
         contents.add(new Content("text", Serializer.serializeList(ingredients)));
         this.messages = List.of(new Message("user", contents));
